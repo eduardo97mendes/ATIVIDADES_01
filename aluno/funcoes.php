@@ -1,135 +1,358 @@
+
 <?php
-/**
- * ============================================================
- * O QUE A GENTE VAI CRIAR AQUI?
- * As FUNÇÕES do PHP: ler o que a pessoa digitou, checar se
- * falta alguma coisa e calcular o valor do pedido.
- *
- * Neste arquivo NÃO tem HTML. Quem chama ele é o processar.php.
- *
- * Já está pronto (não precisa mudar):
- * - lista_produtos()  → nomes e preços
- * - ler_pedido()      → pega os dados do formulário ($_POST)
- * - montar_resumo()   → junta as infos para mostrar no final
- *
- * O seu trabalho: validar_pedido() e calcular_total().
- * ============================================================
- */
+/*
+========================================================
+ ATIVIDADE PRÁTICA — SISTEMA DE PEDIDOS COM PHP
+========================================================
+
+OBJETIVO:
+Fazer o PHP verificar os dados de um pedido
+e calcular o valor total da compra.
+
+O QUE VOCÊ PRECISA FAZER?
+
+[1] Verificar o TELEFONE
+[2] Verificar o ENDEREÇO
+[3] Verificar o PRODUTO
+[4] Verificar a QUANTIDADE
+[5] Calcular o VALOR TOTAL
+
+INSTRUÇÕES:
+- Procure os espaços marcados com PREENCHER.
+- Leia o exemplo pronto antes de completar.
+- Troque os ________ pelos códigos corretos.
+- Remova // das linhas de exemplo ao completá-las.
+- Não altere as funções marcadas como PRONTAS.
+
+========================================================
+*/
+
+
+// ======================================================
+// FUNÇÃO 1 — LISTA DE PRODUTOS (PRONTA)
+// NÃO PRECISA ALTERAR
+// ======================================================
 
 function lista_produtos()
 {
-    // O texto da esquerda tem que ser igual ao value do <select> no HTML.
-    // nome e preco são o que aparece no resumo.
     return [
-        'pizza-margherita' => ['nome' => 'Pizza Margherita', 'preco' => 39.90],
-        'hamburguer-classico' => ['nome' => 'Hambúrguer Clássico', 'preco' => 32.50],
-        'combo-sushi' => ['nome' => 'Combo Sushi', 'preco' => 48.00],
-        'acai-bowl' => ['nome' => 'Açaí Bowl', 'preco' => 24.90],
-        'brownie-sorvete' => ['nome' => 'Brownie com Sorvete', 'preco' => 18.00],
+        'pizza-margherita' => [
+            'nome' => 'Pizza Margherita',
+            'preco' => 39.90
+        ],
+
+        'hamburguer-classico' => [
+            'nome' => 'Hambúrguer Clássico',
+            'preco' => 32.50
+        ],
+
+        'combo-sushi' => [
+            'nome' => 'Combo Sushi',
+            'preco' => 48.00
+        ],
+
+        'acai-bowl' => [
+            'nome' => 'Açaí Bowl',
+            'preco' => 24.90
+        ],
+
+        'brownie-sorvete' => [
+            'nome' => 'Brownie com Sorvete',
+            'preco' => 18.00
+        ],
     ];
 }
+
+
+// ======================================================
+// FUNÇÃO 2 — RECEBER DADOS DO FORMULÁRIO (PRONTA)
+// NÃO PRECISA ALTERAR
+// ======================================================
 
 function ler_pedido()
 {
-    // isset() = "esse campo veio no formulário?"
-    // trim()  = tira espaços a mais no começo e no fim
     return [
-        'nome' => isset($_POST['nome']) ? trim($_POST['nome']) : '',
-        'telefone' => isset($_POST['telefone']) ? trim($_POST['telefone']) : '',
-        'endereco' => isset($_POST['endereco']) ? trim($_POST['endereco']) : '',
-        'produto' => isset($_POST['produto']) ? trim($_POST['produto']) : '',
-        'quantidade' => isset($_POST['quantidade']) ? $_POST['quantidade'] : '',
-        'observacoes' => isset($_POST['observacoes']) ? trim($_POST['observacoes']) : '',
+        'nome' => isset($_POST['nome'])
+            ? trim($_POST['nome']) : '',
+
+        'telefone' => isset($_POST['telefone'])
+            ? trim($_POST['telefone']) : '',
+
+        'endereco' => isset($_POST['endereco'])
+            ? trim($_POST['endereco']) : '',
+
+        'produto' => isset($_POST['produto'])
+            ? trim($_POST['produto']) : '',
+
+        'quantidade' => isset($_POST['quantidade'])
+            ? $_POST['quantidade'] : '',
+
+        'observacoes' => isset($_POST['observacoes'])
+            ? trim($_POST['observacoes']) : '',
     ];
 }
 
+
+// ======================================================
+// FUNÇÃO 3 — VALIDAR PEDIDO
+// AQUI COMEÇA A ATIVIDADE DO ALUNO
+// ======================================================
+
 function validar_pedido($dados)
 {
-    // $erros começa vazio. Cada problema vira uma frase nesta lista.
-    // Se a lista tiver item, o PHP mostra os erros. Se estiver vazia, confirma o pedido.
+    // Lista onde guardaremos os erros
     $erros = [];
+
+    // Busca os produtos cadastrados
     $produtos = lista_produtos();
 
-    // =========================================================
-    // PASSO 1 — EXEMPLO PRONTO: conferir o NOME
-    //
-    // O que a gente fez: perguntar "o nome ficou vazio?"
-    // empty(...) é verdadeiro se a pessoa não escreveu nada.
-    // $erros[] = '...' coloca uma mensagem na lista.
-    //
-    // Os outros campos obrigatórios seguem esse mesmo jeito.
-    // =========================================================
+
+    // ==================================================
+    // EXEMPLO PRONTO — VERIFICAR O NOME
+    // ==================================================
+
+    // empty() verifica se o campo está vazio.
+    // if significa SE.
+    // $erros[] adiciona uma mensagem de erro.
+
     if (empty($dados['nome'])) {
         $erros[] = 'Digite o seu nome.';
     }
 
-    // =========================================================
-    // PASSO 2 — AGORA É COM VOCÊ: conferir o TELEFONE
-    //
-    // O que você vai criar: a mesma checagem, agora para o telefone.
-    //
-    // Modelo:
-    // if (empty($dados['telefone'])) {
-    //     $erros[] = 'Digite o telefone.';
-    // }
-    // =========================================================
-    // TODO: se o telefone estiver vazio, coloque uma frase em $erros
 
-    // =========================================================
-    // PASSO 3 — DESAFIO: conferir o resto
-    //
-    // O que você vai criar: regras para endereço, produto e quantidade.
-    // Use if / else, igual no nome.
-    //
-    // - endereço vazio → erro
-    // - produto vazio → erro
-    // - produto preenchido, mas NÃO existe em $produtos → erro
-    //   dica: !isset($produtos[$dados['produto']])
-    // - quantidade tem que ser um número inteiro, no mínimo 1
-    //   $qtd = filter_var($dados['quantidade'], FILTER_VALIDATE_INT);
-    //   se $qtd === false ou $qtd < 1 → erro
-    //
-    // observacoes pode ficar vazia. Não precisa de erro.
-    // =========================================================
+    // ==================================================
+    // PREENCHER 1 — VERIFICAR O TELEFONE
+    // ==================================================
+
+    /*
+    OBJETIVO:
+    Verificar se o cliente digitou o telefone.
+
+    DICA:
+    Copie a lógica utilizada no NOME.
+
+    Substitua:
+    ________ pelo nome do campo.
+    ________ pela mensagem de erro.
+
+    REMOVA // das linhas abaixo.
+    */
+
+    // if (empty($dados['________'])) {
+    //     $erros[] = '________';
+    // }
+
+
+    // ==================================================
+    // PREENCHER 2 — VERIFICAR O ENDEREÇO
+    // ==================================================
+
+    /*
+    OBJETIVO:
+    Verificar se o endereço foi preenchido.
+
+    DICA:
+    Utilize novamente empty() e if.
+
+    Pergunta:
+    Qual campo devemos verificar agora?
+
+    REMOVA // das linhas abaixo.
+    */
+
+    // if (empty($dados['________'])) {
+    //     $erros[] = '________';
+    // }
+
+
+    // ==================================================
+    // PREENCHER 3 — VERIFICAR O PRODUTO
+    // ==================================================
+
+    /*
+    OBJETIVO:
+    Verificar DUAS situações:
+
+    1. O cliente não escolheu nenhum produto.
+    2. O produto escolhido não existe na lista.
+
+    COMANDOS:
+
+    empty() = verifica se está vazio.
+
+    isset() = verifica se existe.
+
+    !isset() = verifica se NÃO existe.
+
+    elseif = SENÃO, SE.
+
+    DICA:
+    O nome do campo é 'produto'.
+
+    REMOVA // das linhas abaixo.
+    */
+
+    // if (empty($dados['________'])) {
+    //     $erros[] = '________';
+
+    // } elseif (!isset($produtos[$dados['________']])) {
+    //     $erros[] = '________';
+    // }
+
+
+    // ==================================================
+    // PREENCHER 4 — VERIFICAR A QUANTIDADE
+    // ==================================================
+
+    /*
+    OBJETIVO:
+    O cliente precisa informar uma quantidade válida.
+
+    REGRAS:
+    - Precisa ser um número inteiro.
+    - Não pode ser zero.
+    - Não pode ser negativo.
+
+    EXEMPLOS:
+    1  = válido
+    3  = válido
+    0  = inválido
+    -2 = inválido
+    1.5 = inválido
+
+    A linha abaixo já verifica se é inteiro.
+    */
+
+    $qtd = filter_var(
+        $dados['quantidade'],
+        FILTER_VALIDATE_INT
+    );
+
+    /*
+    AGORA COMPLETE:
+
+    $qtd === false  = número inválido
+
+    $qtd < 1         = menor que 1
+
+    ||               = OU
+
+    Falta adicionar a mensagem em $erros.
+
+    REMOVA // das linhas abaixo.
+    */
+
+    // if ($qtd === false || $qtd < 1) {
+    //     $erros[] = '________';
+    // }
+
+
+    // ==================================================
+    // FIM DAS VALIDAÇÕES
+    // NÃO ALTERAR
+    // ==================================================
 
     return $erros;
 }
 
+
+// ======================================================
+// FUNÇÃO 4 — CALCULAR O TOTAL
+// PREENCHER 5
+// ======================================================
+
 function calcular_total($produto, $quantidade)
 {
+    // Busca os produtos
     $produtos = lista_produtos();
 
-    // =========================================================
-    // DESAFIO (conta): o que você vai criar
-    // Valor a pagar = preço do produto × quantidade.
-    //
-    // if (isset($produtos[$produto])) {
-    //     $preco = $produtos[$produto]['preco'];
-    //     return $preco * $quantidade;
-    // }
-    // return 0;
-    //
-    // Se você deixar return 0, o resumo mostra R$ 0,00.
-    // =========================================================
+    /*
+    OBJETIVO:
+    Calcular o valor total de um pedido.
+
+    FÓRMULA:
+
+    TOTAL = PREÇO × QUANTIDADE
+
+    EXEMPLO:
+    Pizza: R$ 39,90
+    Quantidade: 2
+
+    Total: R$ 79,80
+
+    COMANDOS:
+
+    isset() = verifica se o produto existe.
+
+    $produtos[$produto]['preco']
+    = consulta o preço do produto escolhido.
+
+    return = devolve o resultado.
+
+    ATIVIDADE:
+
+    1. Guardar o preço em $preco.
+    2. Multiplicar o preço pela quantidade.
+    3. Retornar o resultado.
+
+    */
+
+    if (isset($produtos[$produto])) {
+
+        // PASSO A: Guardar o preço do produto
+        // $preco = ________;
+
+        // PASSO B: Multiplicar e devolver o resultado
+        // return ________;
+
+    }
+
+    /*
+    Se o produto não existir, retorna zero.
+
+    ATENÇÃO:
+    Enquanto você não completar os passos
+    acima, o pedido mostrará R$ 0,00.
+    */
+
     return 0;
 }
 
+
+// ======================================================
+// FUNÇÃO 5 — MONTAR O RESUMO (PRONTA)
+// NÃO PRECISA ALTERAR
+// ======================================================
+
 function montar_resumo($dados)
 {
-    // Junta o que a tela de sucesso precisa. Já está pronto.
     $produtos = lista_produtos();
+
     $codigo = $dados['produto'];
+
     $quantidade = (int) $dados['quantidade'];
-    $preco = isset($produtos[$codigo]) ? $produtos[$codigo]['preco'] : 0;
+
+    $preco = isset($produtos[$codigo])
+        ? $produtos[$codigo]['preco']
+        : 0;
 
     return [
         'nome' => $dados['nome'],
+
         'telefone' => $dados['telefone'],
+
         'endereco' => $dados['endereco'],
-        'produto_nome' => isset($produtos[$codigo]) ? $produtos[$codigo]['nome'] : $codigo,
+
+        'produto_nome' => isset($produtos[$codigo])
+            ? $produtos[$codigo]['nome']
+            : $codigo,
+
         'quantidade' => $quantidade,
+
         'preco_unitario' => $preco,
+
         'total' => calcular_total($codigo, $quantidade),
+
         'observacoes' => $dados['observacoes'],
     ];
 }
